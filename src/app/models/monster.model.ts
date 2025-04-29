@@ -31,15 +31,9 @@ export class Monster extends GameEntity {
   display(p5: any): void {
     if (!this.isAlive) return;
 
-    // Display monster - gray pixel on top, green pixel on bottom
+    // Display zombie with darker colors
     p5.noStroke();
-    
-    // Gray pixel on top
-    p5.fill('#7f8c8d');
-    p5.rect(this.x, this.y, this.width, this.height / 2);
-    
-    // Green pixel on bottom
-    p5.fill('#2ecc71');
-    p5.rect(this.x, this.y + this.height / 2, this.width, this.height / 2);
+    p5.fill('#1abc9c'); // Dark green for zombies
+    p5.rect(this.x, this.y, this.width, this.height);
   }
 }

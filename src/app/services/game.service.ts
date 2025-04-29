@@ -27,6 +27,7 @@ export class GameService {
   private canvasHeight = 0;
   private lastMonsterSpawnTime = 0;
   private monsterSpawnInterval = 1500; // Spawn monsters every 1.5 seconds
+  private wave = 1; // Track the current wave
   
   initGame(canvasWidth: number, canvasHeight: number): void {
     this.canvasWidth = canvasWidth;
@@ -37,6 +38,8 @@ export class GameService {
     this.isGameOverSubject.next(false);
     this.scoreSubject.next(0);
     this.monsters = [];
+    this.wave = 1;
+    this.monsterSpawnInterval = 1500;
     
     // Create player in the center
     const playerSize = 20;
@@ -53,6 +56,9 @@ export class GameService {
   
   updateGame(p5: any): void {
     if (this.isGameOverSubject.value) return;
+
+    // Update player movement
+    this.player.update(p5); // Ensure the player's update method is called
     
     // Update game timer
     if (p5.frameCount % 60 === 0) { // Roughly every second
@@ -71,6 +77,13 @@ export class GameService {
       this.lastMonsterSpawnTime = currentTime;
     }
     
+    // Increase difficulty every 30 seconds
+    if (p5.frameCount % (60 * 30) === 0) {
+      this.wave++;
+      this.monsterSpawnInterval = Math.max(500, this.monsterSpawnInterval - 100); // Faster spawns
+      this.monsters.forEach(monster => monster.speed += 0.2); // Faster zombies
+    }
+    
     // Update machete
     this.machete.update(p5);
     
@@ -86,6 +99,14 @@ export class GameService {
           monster.isAlive = false;
           this.scoreSubject.next(this.scoreSubject.value + 1);
           this.monsters.splice(i, 1); // Remove dead monster
+        }
+        
+        // Check collision with player
+        if (monster.isColliding(this.player)) {
+          this.player.health -= 10; // Reduce player health
+          if (this.player.health <= 0) {
+            this.endGame();
+          }
         }
       }
     }

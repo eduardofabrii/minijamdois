@@ -47,47 +47,58 @@ export class GameComponent implements OnInit, OnDestroy {
   
   private createCanvas(): void {
     const sketch = (p: any) => {
+      const dustParticles: { x: number; y: number; size: number; speed: number }[] = [];
+
       p.setup = () => {
-        // Create canvas and initialize game
-        const canvas = p.createCanvas(500, 500);
+        const canvas = p.createCanvas(p.windowWidth, p.windowHeight); // Fullscreen canvas
         canvas.parent(this.gameContainer.nativeElement);
-        
+
+        // Initialize dust particles
+        for (let i = 0; i < 100; i++) {
+          dustParticles.push({
+            x: p.random(p.width),
+            y: p.random(p.height),
+            size: p.random(2, 6),
+            speed: p.random(0.5, 1.5),
+          });
+        }
+
         this.gameService.initGame(p.width, p.height);
       };
-      
+
+      p.windowResized = () => {
+        p.resizeCanvas(p.windowWidth, p.windowHeight); // Adjust canvas on window resize
+        this.gameService.initGame(p.width, p.height);
+      };
+
       p.draw = () => {
-        // Clear background
-        p.background(20); // Dark background
-        
+        // Background with dust particles
+        p.background(30); // Dark gray background
+        dustParticles.forEach((particle) => {
+          p.fill(150, 150, 150, 100); // Gray semi-transparent particles
+          p.noStroke();
+          p.ellipse(particle.x, particle.y, particle.size);
+          particle.y += particle.speed;
+          if (particle.y > p.height) particle.y = 0; // Reset particle position
+        });
+
         // Update game state
         this.gameService.updateGame(p);
-        
+
         // Display player
         this.gameService.player.display(p);
-        
+
         // Display machete
         this.gameService.machete.display(p);
-        
+
         // Display monsters
         for (const monster of this.gameService.monsters) {
           monster.display(p);
         }
-        
-        // Display game info
-        this.displayGameInfo(p);
       };
     };
-    
+
     this.p5Instance = new p5(sketch);
-  }
-  
-  private displayGameInfo(p: any): void {
-    // Display score and time
-    p.fill(255);
-    p.textSize(16);
-    p.textAlign(p.LEFT, p.TOP);
-    p.text(`Time: ${this.gameTime}s`, 10, 10);
-    p.text(`Score: ${this.score}`, 10, 30);
   }
   
   restartGame(): void {

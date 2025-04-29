@@ -3,13 +3,12 @@ import { Player } from './player.model';
 
 export class Machete extends GameEntity {
   angle: number = 0;
-  radius: number = 60; // Distance from player
+  radius: number = 100; // Distance from player
   rotationSpeed: number = 0.05; // Rotation speed
   player: Player;
-  color: string = '#e74c3c'; // Red color for machete
 
   constructor(player: Player, size: number) {
-    super(player.x, player.y, size, size);
+    super(player.x, player.y, size * 2, size * 3); // Larger size for the axe
     this.player = player;
   }
 
@@ -25,8 +24,23 @@ export class Machete extends GameEntity {
   }
 
   display(p5: any): void {
-    p5.fill(this.color);
-    p5.noStroke();
-    p5.rect(this.x, this.y, this.width, this.height);
+    // Display machete as an axe
+    p5.push();
+    p5.translate(this.x + this.width / 2, this.y + this.height / 2);
+    p5.rotate(this.angle); // Rotate the axe to match its orbit
+
+    // Handle of the axe
+    p5.fill('#8B4513'); // Brown color for the handle
+    p5.rect(-this.width / 6, -this.height / 2, this.width / 3, this.height);
+
+    // Blade of the axe
+    p5.fill('#C0C0C0'); // Silver color for the blade
+    p5.triangle(
+      -this.width / 2, -this.height / 2, // Top-left corner of the blade
+      this.width / 2, -this.height / 2,  // Top-right corner of the blade
+      0, this.height / 3                // Bottom point of the blade
+    );
+
+    p5.pop();
   }
 }

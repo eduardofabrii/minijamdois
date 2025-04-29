@@ -3,13 +3,8 @@
   
   <div *ngIf="isGameOver" class="game-over-screen">
     <h2>{{ score > 0 ? 'You Survived!' : 'Game Over' }}</h2>
-    <p>You survived for 120 seconds!</p>
+    <p>You survived for {{ 120 - gameTime }} seconds!</p>
     <p>Monsters defeated: {{ score }}</p>
     <button (click)="restartGame()">Play Again</button>
-  </div>
-  
-  <div class="game-info">
-    <div>Time: {{ gameTime }}s</div>
-    <div>Score: {{ score }}</div>
   </div>
 </div>
