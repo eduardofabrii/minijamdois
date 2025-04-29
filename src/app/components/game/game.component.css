@@ -1,0 +1,72 @@
+.game-container {
+  position: relative;
+  width: 500px;
+  height: 500px;
+  margin: 0 auto;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.game-over-screen {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 2rem;
+  border-radius: 8px;
+  text-align: center;
+  z-index: 10;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.game-over-screen h2 {
+  margin-bottom: 1rem;
+  font-size: 2rem;
+  color: #3498db;
+}
+
+.game-over-screen p {
+  margin-bottom: 0.5rem;
+  font-size: 1.2rem;
+}
+
+.game-over-screen button {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  padding: 0.5rem 1.5rem;
+  font-size: 1.1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 1.5rem;
+  transition: background-color 0.2s;
+}
+
+.game-over-screen button:hover {
+  background-color: #c0392b;
+}
+
+.game-info {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  color: white;
+  font-size: 1.2rem;
+  display: none;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@media (max-width: 500px) {
+  .game-container {
+    width: 100%;
+    height: 100vw;
+    max-height: 80vh;
+  }
+}
