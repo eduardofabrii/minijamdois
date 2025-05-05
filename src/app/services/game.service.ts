@@ -106,10 +106,14 @@ export class GameService {
         
         // Check collision with player
         if (monster.isColliding(this.player)) {
-          this.player.health -= 10; // Reduce player health
-          if (this.player.health <= 0) {
-            this.endGame();
-          }
+          this.monsters.forEach(monster => {
+            monster.update(p5);
+        
+            // Verificar se o jogador morreu
+            if (this.player.health <= 0) {
+              this.endGame();
+            }
+          });
         }
       }
     }
