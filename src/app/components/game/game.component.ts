@@ -100,7 +100,7 @@ export class GameComponent implements OnInit, OnDestroy {
         p.text(`Score: ${this.score}`, p.width - 10, 10); // Exibir no canto superior direito
 
         // Adiciona uma nova machete a cada 5 segundos
-        if (p.millis() - lastMacheteAddedTime >= 60000) {
+        if (p.millis() - lastMacheteAddedTime >= 5000) {
           this.gameService.addMachete();
           lastMacheteAddedTime = p.millis(); // Atualiza o tempo da última machete
         }

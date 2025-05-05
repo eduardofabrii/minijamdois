@@ -116,9 +116,26 @@ export class GameService {
   }
   
   addMachete(): void {
-    if (this.machetes.length < 5) { // Limit to 5 machetes
+    if (this.machetes.length < 5) { // Limite de 5 machetes
       const macheteSize = 10;
-      this.machetes.push(new Machete(this.player, macheteSize));
+      const pentagonVertices = 5; // Número de vértices do pentágono
+      const angleStep = (2 * Math.PI) / pentagonVertices; // Ângulo entre os vértices
+      const radius = 100; // Raio do pentágono (distância do jogador)
+
+      // Calcula o ângulo do próximo vértice baseado no índice da machete
+      const angle = this.machetes.length * angleStep;
+
+      // Calcula a posição da nova machete
+      const x = this.player.x + this.player.width / 2 - macheteSize / 2 + Math.cos(angle) * radius;
+      const y = this.player.y + this.player.height / 2 - macheteSize / 2 + Math.sin(angle) * radius;
+
+      // Cria e adiciona a nova machete
+      const newMachete = new Machete(this.player, macheteSize);
+      newMachete.x = x;
+      newMachete.y = y;
+      newMachete.angle = angle; // Define o ângulo inicial da machete
+
+      this.machetes.push(newMachete);
     }
   }
   
