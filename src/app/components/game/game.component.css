@@ -77,14 +77,11 @@
 
 .game-start-gif {
   position: fixed;
-  /* Fixa o GIF na tela */
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 100vw;
-  /* Ocupa 100% da largura da tela */
-  height: 100vh;
-  /* Ocupa 100% da altura da tela */
+  width: 90vw;
+  height: 90vh;
 }
 
 @media (max-width: 500px) {

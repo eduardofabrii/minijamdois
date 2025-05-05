@@ -2,7 +2,7 @@ import { GameEntity } from './game-entity.model';
 import { Player } from './player.model';
 
 export class Monster extends GameEntity {
-  speed: number = 0.8;
+  speed: number = 1.2; // Velocidade aumentada de 0.8 para 1.2
   player: Player;
   isAlive: boolean = true;
   private biteTimer: number = 0; // Temporizador para controlar o dano
