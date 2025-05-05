@@ -3,7 +3,7 @@ import { Player } from './player.model';
 
 export class Machete extends GameEntity {
   angle: number = 0;
-  radius: number = 100; // Distância do player
+  radius: number = 200; // Aumentado a distância do player
   rotationSpeed: number = 0.05; // Velocidade de rotação
   player: Player;
   image: any; // Imagem do machado
@@ -35,7 +35,6 @@ export class Machete extends GameEntity {
     p5.translate(this.x + this.width / 2, this.y + this.height / 2);
     p5.rotate(this.angle);
     p5.imageMode(p5.CENTER);
-    // Agora desenha usando as dimensões já escaladas
     p5.image(this.image, 0, 0, this.width, this.height);
     p5.pop();
   }
