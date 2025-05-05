@@ -1,6 +1,115 @@
 <div class="game-container">
   <img *ngIf="showGif" src="app/assets/gif.gif" alt="Game Start Animation" class="game-start-gif" />
   
+  <div *ngIf="showTutorial" class="tutorial-screen">
+    <div class="tutorial-content">
+      <h2>Manual de Sobrevivência</h2>
+      
+      <div class="tutorial-steps-container">
+        <div *ngIf="currentTutorialStep === 1 || currentTutorialStep > 3" class="tutorial-step">
+          <div class="tutorial-icon">
+            <img src="app/assets/wasd.jpg" alt="WASD keys" class="tutorial-image">
+          </div>
+          <div class="tutorial-text">
+            <h3>Movimento</h3>
+            <p>Use <span class="key">W</span><span class="key">A</span><span class="key">S</span><span class="key">D</span> para mover-se. Permanecer parado significa morte certa.</p>
+          </div>
+        </div>
+        
+        <div *ngIf="currentTutorialStep === 2 || currentTutorialStep > 3" class="tutorial-step">
+          <div class="tutorial-icon">
+            <img src="app/assets/machado.png" alt="Machete" class="tutorial-image">
+          </div>
+          <div class="tutorial-text">
+            <h3>Armas</h3>
+            <p>Machetes orbitam seu corpo e <strong>eliminam</strong> infectados ao contato.</p>
+            <p>A cada 45s uma nova machete aparece. <strong>Máximo: 5</strong></p>
+          </div>
+        </div>
+        
+        <div *ngIf="currentTutorialStep === 3 || currentTutorialStep > 3" class="tutorial-step">
+          <div class="tutorial-icon">
+            <img src="app/assets/zumbi.png" alt="Zombie" class="tutorial-image">
+          </div>
+          <div class="tutorial-text">
+            <h3>Ameaça</h3>
+            <p>Infectados emergem das bordas. Contato direto causa dano.</p>
+            <p>A cada 30s, nova <strong>horda</strong> ataca. Cada vez mais numerosa.</p>
+            <p>Sobreviva. Elimine. Repita.</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="tutorial-navigation">
+        <div class="tutorial-progress">
+          <span *ngFor="let i of [1, 2, 3]" 
+                [class.active]="i === currentTutorialStep" 
+                class="tutorial-dot"
+                (click)="goToTutorialStep(i)"></span>
+        </div>
+        
+        <div class="tutorial-buttons">
+          <button (click)="skipTutorial()" class="tutorial-button skip-button">PULAR</button>
+          <button (click)="nextTutorialStep()" class="tutorial-button next-button">
+            {{ currentTutorialStep === totalTutorialSteps ? 'INICIAR' : 'PRÓXIMO' }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div *ngIf="showStory" class="story-screen">
+    <div class="story-content">
+      <div class="story-header">
+        <h2>A QUEDA DOS VIVOS</h2>
+        <div class="story-type-effect">Arquivo 13: Relatório final</div>
+      </div>
+      
+      <div class="story-step-container">
+        <div *ngIf="currentStoryStep === 1" class="story-step">
+          <p>Diário #743 - Cientista-chefe Dr. Miroslav</p>
+          <p class="story-text">O vírus escapou. <span class="highlight">Eu fui responsável</span>. Tentamos criar uma cura para o câncer, mas o patógeno mutou de forma imprevisível. Infectados perdem controle motor e desenvolvem fome insaciável. Taxa de infecção: 98.7%. Meu Deus, o que nós fizemos?</p>
+        </div>
+        
+        <div *ngIf="currentStoryStep === 2" class="story-step">
+          <p>Transmissão de Emergência - 3 meses após o surto</p>
+          <p class="story-text">As megacidades caíram primeiro. A Guarda Nacional <span class="highlight">não conseguiu conter</span> os infectados. O governo declarou lei marcial, mas já era tarde demais. As zonas seguras foram comprometidas de dentro para fora. Sobreviventes relatam comportamento de matilha entre os infectados.</p>
+        </div>
+        
+        <div *ngIf="currentStoryStep === 3" class="story-step">
+          <p>Frequência militar - 8 meses após o surto</p>
+          <p class="story-text">Apenas 12% da população mundial permanece não infectada. Os mortos se <span class="highlight">levantam</span> e caçam. Observamos evolução no comportamento dos infectados - eles se adaptam, aprendem. O vírus está se tornando mais inteligente. O protocolo Omega foi autorizado. Deus nos perdoe.</p>
+        </div>
+        
+        <div *ngIf="currentStoryStep === 4" class="story-step">
+          <p>Diário pessoal - 1 ano após o surto</p>
+          <p class="story-text">Perdi minha família há três semanas. Sou um dos últimos. Encontrei uma <span class="highlight">machete</span> eficiente para eliminar os infectados. As criaturas não sentem dor, apenas fome. Ouvi rumores sobre um refúgio ao norte. Preciso sobreviver.</p>
+        </div>
+        
+        <div *ngIf="currentStoryStep === 5" class="story-step">
+          <p>Agora</p>
+          <p class="story-text">Você foi cercado. O acampamento foi invadido durante a noite. Os outros... você não consegue pensar nisso agora. <span class="highlight">Eles estão vindo</span>. Dezenas, talvez centenas, atraídos pelo som da sua última bala desperdiçada. Com apenas sua machete em mãos, você faz a única coisa possível...</p>
+          <p class="story-choice">... você luta.</p>
+        </div>
+      </div>
+      
+      <div class="story-navigation">
+        <div class="story-progress">
+          <span *ngFor="let i of [1, 2, 3, 4, 5]" 
+                [class.active]="i === currentStoryStep" 
+                class="story-dot"></span>
+        </div>
+        
+        <div class="story-buttons">
+          <button (click)="skipStory()" class="story-button skip-button">PULAR</button>
+          <button (click)="nextStoryStep()" class="story-button next-button">
+            {{ currentStoryStep === totalStorySteps ? 'SOBREVIVER' : 'CONTINUAR' }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
   <div #gameContainer></div>
   
   <div *ngIf="isGameOver" class="game-over-screen">

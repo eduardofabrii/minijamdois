@@ -19,6 +19,16 @@ export class GameComponent implements OnInit, OnDestroy {
   score = 0;
   isGameOver = false;
   showGif: boolean = true; // Controla a exibição do GIF
+  showTutorial: boolean = false; // Controla a exibição do tutorial
+  showStory: boolean = false; // Controla a exibição da história
+  
+  // Tutorial steps
+  currentTutorialStep = 1;
+  totalTutorialSteps = 3;
+  
+  // Story steps
+  currentStoryStep = 1;
+  totalStorySteps = 5;
   
   private subscriptions: Subscription[] = [];
   
@@ -96,10 +106,52 @@ export class GameComponent implements OnInit, OnDestroy {
 
   @HostListener('document:click')
   @HostListener('document:keydown')
-  startGame(): void {
+  handleUserInteraction(): void {
     if (this.showGif) {
       this.showGif = false;
+      this.showTutorial = true; // Mostrar o tutorial depois do GIF
+    } else if (this.showTutorial) {
+      // Se já está mostrando o tutorial, avança para o próximo passo
+      this.nextTutorialStep();
+    } else if (this.showStory) {
+      // Se está mostrando a história, avança para o próximo passo
+      this.nextStoryStep();
+    }
+  }
+  
+  nextTutorialStep(): void {
+    if (this.currentTutorialStep < this.totalTutorialSteps) {
+      this.currentTutorialStep++;
+    } else {
+      // Finalizar o tutorial e mostrar a história
+      this.showTutorial = false;
+      this.showStory = true;
+    }
+  }
+  
+  nextStoryStep(): void {
+    if (this.currentStoryStep < this.totalStorySteps) {
+      this.currentStoryStep++;
+    } else {
+      // Finalizar a história e iniciar o jogo
+      this.showStory = false;
       this.createCanvas(); // Inicia o jogo
+    }
+  }
+  
+  skipStory(): void {
+    this.showStory = false;
+    this.createCanvas(); // Inicia o jogo
+  }
+  
+  skipTutorial(): void {
+    this.showTutorial = false;
+    this.showStory = true; // Mostrar a história depois de pular o tutorial
+  }
+  
+  goToTutorialStep(step: number): void {
+    if (step >= 1 && step <= this.totalTutorialSteps) {
+      this.currentTutorialStep = step;
     }
   }
   

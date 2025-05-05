@@ -1,10 +1,13 @@
 {
-  "name": "angular-starter",
+  "name": "minijamdois",
+  "version": "0.0.1",
   "private": true,
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build"
+    "start": "ng serve minijamdois",
+    "build": "ng build minijamdois",
+    "watch": "ng build minijamdois --watch --configuration development",
+    "test": "ng test minijamdois"
   },
   "dependencies": {
     "@angular/animations": "^19.2.0",
