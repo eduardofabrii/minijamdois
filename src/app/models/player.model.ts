@@ -40,7 +40,7 @@ export class Player extends GameEntity {
     }
     p5.push();
     p5.imageMode(p5.CENTER);
-    const scaleFactor = 2; // Fator de escala para aumentar a proporção do asset
+    const scaleFactor = 1.75; // Fator de escala para aumentar a proporção do asset
     // Centraliza a imagem
     p5.translate(this.x + this.width / 2, this.y + this.height / 2);
     
