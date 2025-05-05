@@ -46,7 +46,6 @@ export class GameComponent implements OnInit, OnDestroy {
   private createCanvas(): void {
     const sketch = (p: any) => {
       let lastMacheteAddedTime = 0; // Tempo da última machete adicionada
-      const dustParticles: { x: number; y: number; size: number; speed: number }[] = [];
 
       p.setup = () => {
         const canvas = p.createCanvas(p.windowWidth, p.windowHeight); // Fullscreen canvas

@@ -1,15 +1,14 @@
-.game-container {
-  position: relative;
+:host {
+  display: block;
   margin: 0;
   padding: 0;
+}
+.game-container {
+  position: relative;
   width: 100vw;
   height: 100vh;
-  border-radius: 0;
-  box-shadow: none;
-  /* Remove o efeito de sombra */
   background: url('../../assets/background.png') no-repeat center center;
   background-size: cover;
-  /* Ajusta a imagem para cobrir o fundo */
 }
 
 .game-over-screen {
