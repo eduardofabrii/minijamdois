@@ -82,7 +82,7 @@ export class GameComponent implements OnInit, OnDestroy {
         p.text(`Zumbis derrotados: ${this.score}`, p.width - 10, 10); // Exibir no canto superior direito
 
         // Adiciona uma nova machete a cada 30 segundos
-        if (p.millis() - lastMacheteAddedTime >= 5000) {
+        if (p.millis() - lastMacheteAddedTime >= 30000) {
           this.gameService.addMachete();
           lastMacheteAddedTime = p.millis(); // Atualiza o tempo da última machete
         }
