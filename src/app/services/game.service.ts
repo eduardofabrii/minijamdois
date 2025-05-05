@@ -20,7 +20,7 @@ export class GameService {
   score$ = this.scoreSubject.asObservable();
   
   player!: Player;
-  machete!: Machete;
+  machetes: Machete[] = []; // Array for multiple machetes
   monsters: Monster[] = [];
   
   private canvasWidth = 0;
@@ -49,9 +49,9 @@ export class GameService {
       playerSize
     );
     
-    // Create machete
+    // Initialize machetes array with a single machete
     const macheteSize = 10;
-    this.machete = new Machete(this.player, macheteSize);
+    this.machetes = [new Machete(this.player, macheteSize)];
   }
   
   updateGame(p5: any): void {
@@ -84,8 +84,8 @@ export class GameService {
       this.monsters.forEach(monster => monster.speed += 0.2); // Faster zombies
     }
     
-    // Update machete
-    this.machete.update(p5);
+    // Update all machetes
+    this.machetes.forEach(machete => machete.update(p5));
     
     // Update monsters and check collisions
     for (let i = this.monsters.length - 1; i >= 0; i--) {
@@ -94,11 +94,14 @@ export class GameService {
       if (monster.isAlive) {
         monster.update(p5);
         
-        // Check collision with machete
-        if (this.machete.isColliding(monster)) {
-          monster.isAlive = false;
-          this.scoreSubject.next(this.scoreSubject.value + 1);
-          this.monsters.splice(i, 1); // Remove dead monster
+        // Check collision with any machete
+        for (const machete of this.machetes) {
+          if (machete.isColliding(monster)) {
+            monster.isAlive = false;
+            this.scoreSubject.next(this.scoreSubject.value + 1);
+            this.monsters.splice(i, 1); // Remove dead monster
+            break;
+          }
         }
         
         // Check collision with player
@@ -109,6 +112,13 @@ export class GameService {
           }
         }
       }
+    }
+  }
+  
+  addMachete(): void {
+    if (this.machetes.length < 5) { // Limit to 5 machetes
+      const macheteSize = 10;
+      this.machetes.push(new Machete(this.player, macheteSize));
     }
   }
   

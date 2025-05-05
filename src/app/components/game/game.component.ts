@@ -45,6 +45,7 @@ export class GameComponent implements OnInit, OnDestroy {
   
   private createCanvas(): void {
     const sketch = (p: any) => {
+      let lastMacheteAddedTime = 0; // Tempo da última machete adicionada
       const dustParticles: { x: number; y: number; size: number; speed: number }[] = [];
 
       p.setup = () => {
@@ -62,6 +63,7 @@ export class GameComponent implements OnInit, OnDestroy {
         }
 
         this.gameService.initGame(p.width, p.height);
+        lastMacheteAddedTime = p.millis(); // Inicializa o tempo da última machete
       };
 
       p.windowResized = () => {
@@ -86,13 +88,25 @@ export class GameComponent implements OnInit, OnDestroy {
         // Display player
         this.gameService.player.display(p);
 
-        // Display machete
-        this.gameService.machete.display(p);
-
         // Display monsters
         for (const monster of this.gameService.monsters) {
           monster.display(p);
         }
+
+        // Exibir a pontuação no canto superior direito
+        p.fill(255); // Cor do texto (branco)
+        p.textSize(24); // Tamanho da fonte
+        p.textAlign(p.RIGHT, p.TOP); // Alinhar à direita e ao topo
+        p.text(`Score: ${this.score}`, p.width - 10, 10); // Exibir no canto superior direito
+
+        // Adiciona uma nova machete a cada 5 segundos
+        if (p.millis() - lastMacheteAddedTime >= 60000) {
+          this.gameService.addMachete();
+          lastMacheteAddedTime = p.millis(); // Atualiza o tempo da última machete
+        }
+
+        // Exibe todas as machetes
+        this.gameService.machetes.forEach(machete => machete.display(p));
       };
     };
 
