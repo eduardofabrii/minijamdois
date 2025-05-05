@@ -120,26 +120,40 @@ export class GameService {
   }
   
   addMachete(): void {
-    if (this.machetes.length < 5) { // Limite de 5 machetes
-      const macheteSize = 10;
-      const pentagonVertices = 5; // Número de vértices do pentágono
-      const angleStep = (2 * Math.PI) / pentagonVertices; // Ângulo entre os vértices
-      const radius = 100; // Raio do pentágono (distância do jogador)
+    const macheteRadius = 50; // Raio do pentágono
+    const centerX = this.canvasWidth / 2; // Centro fixo do canvas
+    const centerY = this.canvasHeight / 2;
+    const numVertices = 5; // Número de vértices do pentágono
+    const angleStep = (2 * Math.PI) / numVertices; // Ângulo entre os vértices
+    const minDistance = 30; // Distância mínima entre machetes
 
-      // Calcula o ângulo do próximo vértice baseado no índice da machete
-      const angle = this.machetes.length * angleStep;
+    // Limita o número de machetes a 5
+    if (this.machetes.length >= 5) {
+      return;
+    }
 
-      // Calcula a posição da nova machete
-      const x = this.player.x + this.player.width / 2 - macheteSize / 2 + Math.cos(angle) * radius;
-      const y = this.player.y + this.player.height / 2 - macheteSize / 2 + Math.sin(angle) * radius;
+    // Calcula as posições do pentágono
+    const positions = [];
+    for (let i = 0; i < numVertices; i++) {
+      const angle = i * angleStep;
+      const x = centerX + macheteRadius * Math.cos(angle);
+      const y = centerY + macheteRadius * Math.sin(angle);
+      positions.push({ x, y });
+    }
 
-      // Cria e adiciona a nova machete
-      const newMachete = new Machete(this.player, macheteSize);
-      newMachete.x = x;
-      newMachete.y = y;
-      newMachete.angle = angle; // Define o ângulo inicial da machete
+    // Verifica se já existe uma machete próxima antes de adicionar
+    for (const pos of positions) {
+      const isOverlapping = this.machetes.some(
+        machete => Math.hypot(machete.x - pos.x, machete.y - pos.y) < minDistance
+      );
 
-      this.machetes.push(newMachete);
+      if (!isOverlapping) {
+        const newMachete = new Machete(this.player, 10); // Cria a machete com base no jogador
+        newMachete.x = pos.x; // Ajusta a posição x
+        newMachete.y = pos.y; // Ajusta a posição y
+        this.machetes.push(newMachete);
+        break; // Adiciona apenas uma machete por chamada
+      }
     }
   }
   

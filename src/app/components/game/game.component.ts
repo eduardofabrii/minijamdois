@@ -63,7 +63,7 @@ export class GameComponent implements OnInit, OnDestroy {
 
       p.draw = () => {
         p.clear();
-        
+
         // Update game state
         this.gameService.updateGame(p);
 
@@ -79,10 +79,10 @@ export class GameComponent implements OnInit, OnDestroy {
         p.fill(255); // Cor do texto (branco)
         p.textSize(24); // Tamanho da fonte
         p.textAlign(p.RIGHT, p.TOP); // Alinhar à direita e ao topo
-        p.text(`Score: ${this.score}`, p.width - 10, 10); // Exibir no canto superior direito
+        p.text(`Zumbis derrotados: ${this.score}`, p.width - 10, 10); // Exibir no canto superior direito
 
-        // Adiciona uma nova machete a cada 60 segundos
-        if (p.millis() - lastMacheteAddedTime >= 60000) {
+        // Adiciona uma nova machete a cada 30 segundos
+        if (p.millis() - lastMacheteAddedTime >= 5000) {
           this.gameService.addMachete();
           lastMacheteAddedTime = p.millis(); // Atualiza o tempo da última machete
         }
