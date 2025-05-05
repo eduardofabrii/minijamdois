@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { GameService } from '../../services/game.service';
@@ -18,6 +18,7 @@ export class GameComponent implements OnInit, OnDestroy {
   gameTime = 120;
   score = 0;
   isGameOver = false;
+  showGif: boolean = true; // Controla a exibição do GIF
   
   private subscriptions: Subscription[] = [];
   
@@ -30,9 +31,6 @@ export class GameComponent implements OnInit, OnDestroy {
       this.gameService.isGameOver$.subscribe(isGameOver => this.isGameOver = isGameOver),
       this.gameService.score$.subscribe(score => this.score = score)
     );
-    
-    // Create p5 instance
-    this.createCanvas();
   }
   
   ngOnDestroy(): void {
@@ -99,6 +97,15 @@ export class GameComponent implements OnInit, OnDestroy {
     };
 
     this.p5Instance = new p5(sketch);
+  }
+
+  @HostListener('document:click')
+  @HostListener('document:keydown')
+  startGame(): void {
+    if (this.showGif) {
+      this.showGif = false;
+      this.createCanvas(); // Inicia o jogo
+    }
   }
   
   restartGame(): void {

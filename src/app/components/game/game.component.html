@@ -1,4 +1,6 @@
 <div class="game-container">
+  <img *ngIf="showGif" src="app/assets/gif.gif" alt="Game Start Animation" class="game-start-gif" />
+  
   <div #gameContainer></div>
   
   <div *ngIf="isGameOver" class="game-over-screen">
