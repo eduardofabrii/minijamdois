@@ -52,16 +52,6 @@ export class GameComponent implements OnInit, OnDestroy {
         const canvas = p.createCanvas(p.windowWidth, p.windowHeight); // Fullscreen canvas
         canvas.parent(this.gameContainer.nativeElement);
 
-        // Initialize dust particles
-        for (let i = 0; i < 100; i++) {
-          dustParticles.push({
-            x: p.random(p.width),
-            y: p.random(p.height),
-            size: p.random(2, 6),
-            speed: p.random(0.5, 1.5),
-          });
-        }
-
         this.gameService.initGame(p.width, p.height);
         lastMacheteAddedTime = p.millis(); // Inicializa o tempo da última machete
       };
@@ -72,16 +62,8 @@ export class GameComponent implements OnInit, OnDestroy {
       };
 
       p.draw = () => {
-        // Background with dust particles
-        p.background(30); // Dark gray background
-        dustParticles.forEach((particle) => {
-          p.fill(150, 150, 150, 100); // Gray semi-transparent particles
-          p.noStroke();
-          p.ellipse(particle.x, particle.y, particle.size);
-          particle.y += particle.speed;
-          if (particle.y > p.height) particle.y = 0; // Reset particle position
-        });
-
+        p.clear();
+        
         // Update game state
         this.gameService.updateGame(p);
 
