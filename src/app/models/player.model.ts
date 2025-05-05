@@ -13,10 +13,10 @@ export class Player extends GameEntity {
 
   update(p5: any): void {
     // Handle player movement with W, A, S, D keys
-    if (p5.keyIsDown(87)) this.y -= 2; // W key (keyCode 87) - Move up
-    if (p5.keyIsDown(83)) this.y += 2; // S key (keyCode 83) - Move down
-    if (p5.keyIsDown(65)) this.x -= 2; // A key (keyCode 65) - Move left
-    if (p5.keyIsDown(68)) this.x += 2; // D key (keyCode 68) - Move right
+    if (p5.keyIsDown(87)) this.y -= 3; // W key (keyCode 87) - Move up
+    if (p5.keyIsDown(83)) this.y += 3; // S key (keyCode 83) - Move down
+    if (p5.keyIsDown(65)) this.x -= 3; // A key (keyCode 65) - Move left
+    if (p5.keyIsDown(68)) this.x += 3; // D key (keyCode 68) - Move right
 
     // Keep player within canvas bounds
     this.x = p5.constrain(this.x, 0, p5.width - this.width);
@@ -64,7 +64,6 @@ export class Player extends GameEntity {
     p5.fill(255); // White text
     p5.textSize(14); // Larger text
     p5.textAlign(p5.CENTER, p5.BOTTOM);
-    p5.text('Barra de Vida', healthBarX + healthBarWidth / 2, healthBarY - 2);
 
     // Display XP bar
     p5.fill('#f39c12'); // Orange for XP
