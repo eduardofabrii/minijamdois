@@ -97,48 +97,42 @@ export class GameService {
     // Update player movement
     this.player.update(p5);
 
-    // Update game timer
+    // Atualiza o game timer (exibe tempo decorrido, se necessário)
     if (p5.frameCount % 60 === 0) {
-      // Aproximadamente a cada segundo
       const elapsedTime = p5.millis() / 1000;
       this.gameTimeSubject.next(elapsedTime);
     }
 
-    // Spawn monsters periodicamente
+    // Spawn monsters periodicamente (por exemplo, a cada X milissegundos)
     const currentTime = p5.millis();
     if (currentTime - this.lastMonsterSpawnTime > this.monsterSpawnInterval) {
       this.spawnMonster(p5);
       this.lastMonsterSpawnTime = currentTime;
     }
 
-    // A cada 30 segundos, aumenta a dificuldade e adiciona mais zumbis de forma exponencial
-    // Se passaram 30 segundos desde o último wave update
+    // A cada 30 segundos, inicia uma nova wave com quantidade multiplicada de zumbis:
     if (currentTime - this.lastWaveUpdate >= 30000) {
-      this.wave++;
+      this.wave++; // Incrementa a wave
       this.lastWaveUpdate = currentTime;
-      this.monsterSpawnInterval = Math.max(
-        500,
-        this.monsterSpawnInterval - 100
-      ); // Diminui o intervalo de spawn
-      this.monsters.forEach((monster) => (monster.speed += 0.2)); // Aumenta a velocidade dos monstros
 
-      const baseExtra = 3; // Define o "x" da multiplicação
-      const extraMonsters = Math.pow(baseExtra, this.wave);
+      // Calcula a quantidade de zumbis para a wave atual:
+      const extraMonsters = 30 * Math.pow(2, this.wave - 1);
       for (let i = 0; i < extraMonsters; i++) {
         this.spawnMonster(p5);
       }
+      // Opcional: Você pode também ajustar outras propriedades, como diminuir o intervalo de spawn ou aumentar a velocidade dos monstros.
     }
 
     // Atualiza todas as machetes
     this.machetes.forEach((machete) => machete.update(p5));
 
-    // Atualiza monstros e verifica colisões
+    // Atualiza cada monstro e verifica colisões
     for (let i = this.monsters.length - 1; i >= 0; i--) {
       const monster = this.monsters[i];
       if (monster.isAlive) {
         monster.update(p5);
 
-        // Verifica colisão com qualquer machete
+        // Verifica colisão com quaisquer machetes
         for (const machete of this.machetes) {
           if (machete.isColliding(monster)) {
             monster.isAlive = false;
